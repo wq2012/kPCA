@@ -13,3 +13,5 @@ Standard PCA is not optimized for very high dimensional data. But our kernel PCA
 
 This library is also available at MathWorks:
 * https://www.mathworks.com/matlabcentral/fileexchange/39715-kernel-pca-and-pre-image-reconstruction
+
+![pic](resources/kPCA.png)
