@@ -1,4 +1,4 @@
-# Kernel PCA and Pre-Image Reconstruction
+# Kernel PCA and Pre-Image Reconstruction [![MATLAB](https://img.shields.io/badge/Language-MATLAB-blue.svg)](https://www.mathworks.com/products/matlab.html) [![arxiv](https://img.shields.io/badge/PDF-arXiv-yellow.svg)](https://arxiv.org/pdf/1207.3538.pdf)
 
 ## Overview
 
@@ -15,3 +15,16 @@ This library is also available at MathWorks:
 * https://www.mathworks.com/matlabcentral/fileexchange/39715-kernel-pca-and-pre-image-reconstruction
 
 ![pic](resources/kPCA.png)
+
+## Citations
+
+If you use this library, please cite:
+
+```
+@article{wang2012kernel,
+  title={Kernel principal component analysis and its applications in face recognition and active shape models},
+  author={Wang, Quan},
+  journal={arXiv preprint arXiv:1207.3538},
+  year={2012}
+}
+```
