@@ -1,4 +1,4 @@
-# Kernel PCA and Pre-Image Reconstruction [![MATLAB](https://img.shields.io/badge/Language-MATLAB-blue.svg)](https://www.mathworks.com/products/matlab.html) [![arxiv](https://img.shields.io/badge/PDF-arXiv-yellow.svg)](https://arxiv.org/pdf/1207.3538.pdf)
+# Kernel PCA and Pre-Image Reconstruction [![View Kernel PCA and Pre-Image Reconstruction on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/39715-kernel-pca-and-pre-image-reconstruction) [![arxiv](https://img.shields.io/badge/PDF-arXiv-yellow.svg)](https://arxiv.org/pdf/1207.3538.pdf)
 
 ## Overview
 
