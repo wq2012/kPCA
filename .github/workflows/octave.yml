@@ -18,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y octave
+        sudo apt-get install -y octave octave-statistics
     - name: Run unit tests
       run: |
         pushd tests
