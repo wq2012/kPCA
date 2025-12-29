@@ -32,6 +32,9 @@ for i = 1:N
     gamma(i) = eigVector(i, 1:d) * y(:);
 end
 
+% Adjust gamma for centered kPCA (accounting for feature space mean)
+gamma = gamma + (1 - sum(gamma)) / N;
+
 %% Fixed-point iteration with multiple restarts
 initializations = [mean(X); X(1, :); X(end, :); X(round(N/2), :)];
 if nargin >= 5 && ~isempty(z0)

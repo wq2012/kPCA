@@ -18,7 +18,8 @@ meanX = mean(X);
 k = 3; % Range of b (variation parameter)
 
 %% Automatic parameter selection using the median trick
-para = estimateSigma(X);
+% We use a slightly larger sigma (1.5x) for smoother ASM variations
+para = estimateSigma(X) * 1.5;
 
 %% Kernel PCA
 [Y, eigVector, eigValue] = kPCA(X, d, type, para);
