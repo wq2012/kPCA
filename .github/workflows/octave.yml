@@ -32,9 +32,7 @@ jobs:
         pushd demo1
         octave demo_SyntheticData.m
         popd
-        pushd demo2
-        octave demo_YaleFace.m
-        popd
+        # Skipping demo2 because it requires the octave-statistics package
         pushd demo3
         octave demo_faceASM_PCA.m
         octave demo_faceASM_kPCA.m
