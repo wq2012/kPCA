@@ -1,0 +1,43 @@
+# This workflow will install Octave and run unit tests and the demos
+
+name: Octave application
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install octave
+        sudo apt-get install liboctave-dev
+    - name: Run unit tests
+      run: |
+        pushd tests
+        octave test_distanceMatrix.m
+        octave test_PCA.m
+        octave test_kernel.m
+        octave test_kPCA.m
+        popd
+    - name: Run demos
+      run: |
+        pushd demo1
+        octave demo_SyntheticData.m
+        popd
+        pushd demo2
+        octave demo_YaleFace.m
+        popd
+        pushd demo3
+        octave demo_faceASM_PCA.m
+        octave demo_faceASM_kPCA.m
+        popd
+   
