@@ -1,19 +1,24 @@
+% Unit test for kernel.m
+% Run this from the tests/ directory
+
+% Add library to path
 addpath('../code');
 
+% Test data
 X = [1 2; 3 4];
 
-% Simple kernel
+%% Test Simple (Linear) Kernel
 K_simple = kernel(X, 'simple', []);
 expected_simple = X * X';
 assert(norm(K_simple - expected_simple) < 1e-10);
 
-% Poly kernel
+%% Test Polynomial Kernel
 para_poly = 2;
 K_poly = kernel(X, 'poly', para_poly);
 expected_poly = (X * X' + 1).^para_poly;
 assert(norm(K_poly - expected_poly) < 1e-10);
 
-% Gaussian kernel
+%% Test Gaussian (RBF) Kernel
 para_gaussian = 1;
 K_gaussian = kernel(X, 'gaussian', para_gaussian);
 D = distanceMatrix(X);

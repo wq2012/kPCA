@@ -1,55 +1,64 @@
-%%  This is a demo showing how to use this toolbox
-%   This experiment is performed on a subset of Yale Face Database B
-
+%% Yale Face Database Classification Demo
+%   This demo compares PCA and kPCA for face recognition tasks.
+%   Dataset: A subset of Yale Face Database B.
+%
+%   Note: This demo requires the 'statistics' package for 'pca' and 'classify'.
+%
 %   Copyright by Quan Wang, 2011/05/10
-%   Please cite: Quan Wang. Kernel Principal Component Analysis and its 
-%   Applications in Face Recognition and Active Shape Models. 
-%   arXiv:1207.3538 [cs.CV], 2012. 
+%   Please cite: Quan Wang. Kernel Principal Component Analysis and its
+%   Applications in Face Recognition and Active Shape Models.
+%   arXiv:1207.3538 [cs.CV], 2012.
 
-clear;clc;close all;
+clear; clc; close all;
 
+% Add library to path
 addpath('../code');
+
+% Load dataset
 load YaleFaceData.mat;
 
-d=9;
+d = 9; % Target dimension
 
-%% standard PCA
+%% Standard PCA
 disp('Performing standard PCA...');
-[eigVector,~]=pca(train_x);
-eigVector=eigVector(:,1:d);
-train_PCA=train_x*eigVector;
-test_PCA=test_x*eigVector;
+% Using built-in 'pca' function from statistics package as per repository convention
+[eigVector, ~] = pca(train_x);
+eigVector = eigVector(:, 1:d);
+train_PCA = train_x * eigVector;
+test_PCA = test_x * eigVector;
 
-%% Gaussian kernel PCA
+%% Gaussian Kernel PCA
 disp('Performing Gaussian kernel PCA...');
-type='gaussian';
+type = 'gaussian';
 
-DIST=distanceMatrix(train_x);
-DIST(DIST==0)=inf;
-DIST=min(DIST);
-para=5*mean(DIST);
+% Automatic parameter selection
+DIST = distanceMatrix(train_x);
+DIST(DIST == 0) = inf;
+DIST = min(DIST);
+para = 5 * mean(DIST);
 
-[train_kPCA, eigVector]=kPCA(train_x,d,type,para);
-test_kPCA=kPCA_NewData(test_x,train_x,eigVector,type,para);
+[train_kPCA, eigVector] = kPCA(train_x, d, type, para);
+test_kPCA = kPCA_NewData(test_x, train_x, eigVector, type, para);
 
-%% classification
-% PCA train
-class = classify(train_PCA,train_PCA,train_t);
-error_PCA_train=sum(class'~=train_t)/length(train_t);
+%% Classification and Error Calculation
+% PCA - Training Data
+class = classify(train_PCA, train_PCA, train_t);
+error_PCA_train = sum(class' ~= train_t) / length(train_t);
 
-% PCA test
-class = classify(test_PCA,train_PCA,train_t);
-error_PCA_test=sum(class'~=test_t)/length(test_t);
+% PCA - Testing Data
+class = classify(test_PCA, train_PCA, train_t);
+error_PCA_test = sum(class' ~= test_t) / length(test_t);
 
-% kPCA train
-class = classify(train_kPCA,train_kPCA,train_t);
-error_kPCA_train=sum(class'~=train_t)/length(train_t);
+% kPCA - Training Data
+class = classify(train_kPCA, train_kPCA, train_t);
+error_kPCA_train = sum(class' ~= train_t) / length(train_t);
 
-% kPCA test
-class = classify(test_kPCA,train_kPCA,train_t);
-error_kPCA_test=sum(class'~=test_t)/length(test_t);
+% kPCA - Testing Data
+class = classify(test_kPCA, train_kPCA, train_t);
+error_kPCA_test = sum(class' ~= test_t) / length(test_t);
 
-fprintf('error rate of PCA on training data: %f \n',error_PCA_train);
-fprintf('error rate of PCA on testing data: %f \n',error_PCA_test);
-fprintf('error rate of kPCA on training data: %f \n',error_kPCA_train);
-fprintf('error rate of kPCA on testing data: %f \n',error_kPCA_test);
+%% Display results
+fprintf('Error rate of PCA  on training data: %f\n', error_PCA_train);
+fprintf('Error rate of PCA  on testing data:  %f\n', error_PCA_test);
+fprintf('Error rate of kPCA on training data: %f\n', error_kPCA_train);
+fprintf('Error rate of kPCA on testing data:  %f\n', error_kPCA_test);
