@@ -14,6 +14,11 @@ clear; clc; close all;
 % Add library to path
 addpath('../code');
 
+% Load statistics package for pca and classify
+if is_octave()
+    pkg load statistics;
+end
+
 % Load dataset
 load YaleFaceData.mat;
 
@@ -38,21 +43,24 @@ para = estimateSigma(train_x);
 test_kPCA = kPCA_NewData(test_x, train_x, eigVector, type, para);
 
 %% Classification and Error Calculation
+% Using 1-Nearest Neighbor classifier for compatibility with Octave
+disp('Calculating error rates...');
+
 % PCA - Training Data
-class = classify(train_PCA, train_PCA, train_t);
-error_PCA_train = sum(class' ~= train_t) / length(train_t);
+class = classify_1nn(train_PCA, train_PCA, train_t);
+error_PCA_train = sum(class(:) ~= train_t(:)) / length(train_t);
 
 % PCA - Testing Data
-class = classify(test_PCA, train_PCA, train_t);
-error_PCA_test = sum(class' ~= test_t) / length(test_t);
+class = classify_1nn(test_PCA, train_PCA, train_t);
+error_PCA_test = sum(class(:) ~= test_t(:)) / length(test_t);
 
 % kPCA - Training Data
-class = classify(train_kPCA, train_kPCA, train_t);
-error_kPCA_train = sum(class' ~= train_t) / length(train_t);
+class = classify_1nn(train_kPCA, train_kPCA, train_t);
+error_kPCA_train = sum(class(:) ~= train_t(:)) / length(train_t);
 
 % kPCA - Testing Data
-class = classify(test_kPCA, train_kPCA, train_t);
-error_kPCA_test = sum(class' ~= test_t) / length(test_t);
+class = classify_1nn(test_kPCA, train_kPCA, train_t);
+error_kPCA_test = sum(class(:) ~= test_t(:)) / length(test_t);
 
 %% Display results
 fprintf('Error rate of PCA  on training data: %f\n', error_PCA_train);

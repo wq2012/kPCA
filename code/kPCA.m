@@ -1,8 +1,8 @@
-function [Y, eigVector, eigValue, explained] = kPCA(X, d, type, para)
+function [Y, eigVector, eigValue, explained, stats] = kPCA(X, d, type, para)
 % KPCA performs Kernel Principal Component Analysis.
 %
 %   Usage:
-%   [Y, eigVector, eigValue, explained] = kPCA(X, d, type, para)
+%   [Y, eigVector, eigValue, explained, stats] = kPCA(X, d, type, para)
 %
 %   Input:
 %   X: Data matrix - Each row is one observation, each column is one feature.
@@ -19,6 +19,7 @@ function [Y, eigVector, eigValue, explained] = kPCA(X, d, type, para)
 %   eigVector: The principal component vectors in the kernel space.
 %   eigValue: The eigenvalues in descending order (column vector).
 %   explained: Percentage of total variance explained by each component.
+%   stats: Struct containing centering statistics for use in kPCA_NewData.
 %
 %   Copyright by Quan Wang, 2011/05/10
 %   Please cite: Quan Wang. Kernel Principal Component Analysis and its
@@ -42,13 +43,14 @@ K0 = kernel(X, type, para);
 
 % Efficient centering (O(N^2) time and space)
 % K = K0 - 1/N*ones(N,N)*K0 - 1/N*K0*ones(N,N) + 1/N^2*ones(N,N)*K0*ones(N,N)
-colMeans = mean(K0, 1);
+% Centering stats for kPCA_NewData
+stats.colMeans = mean(K0, 1);
 rowMeans = mean(K0, 2);
-totalMean = mean(colMeans);
+stats.totalMean = mean(stats.colMeans);
 
 K = bsxfun(@minus, K0, rowMeans);
-K = bsxfun(@minus, K, colMeans);
-K = K + totalMean;
+K = bsxfun(@minus, K, stats.colMeans);
+K = K + stats.totalMean;
 
 %% Eigenvalue analysis
 [V, D] = eig(K / N);
@@ -56,7 +58,7 @@ eigValue = diag(D);
 
 % Sort eigenvalues descending
 [eigValue, IX] = sort(eigValue, 'descend');
-eigVector = V(:, IX);
+V = V(:, IX);
 
 % Numerical stability: remove negative or very tiny eigenvalues
 eigValue(eigValue < 0) = 0;
@@ -70,10 +72,13 @@ else
 end
 
 %% Normalization
-norm_eigVector = sqrt(sum(eigVector.^2));
-eigVector = bsxfun(@rdivide, eigVector, norm_eigVector);
+% Eigenvectors alpha of K should be normalized such that alpha' * K * alpha = 1
+% alpha = V / sqrt(N * D)
+eigVector = bsxfun(@rdivide, V, sqrt(N * eigValue' + 1e-15));
 
 %% Dimensionality reduction
 eigVector = eigVector(:, 1:d);
 explained = explained(1:d);
-Y = K0 * eigVector;
+
+% Use centered kernel matrix for projection
+Y = K * eigVector;

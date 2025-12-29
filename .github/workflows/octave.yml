@@ -26,7 +26,7 @@ jobs:
         octave test_PCA.m
         octave test_kernel.m
         octave test_kPCA.m
-        octave test_new_features.m
+        octave test_extensions.m
         octave test_stability.m
         popd
     - name: Run demo1
@@ -36,10 +36,9 @@ jobs:
         popd
     - name: Run demo2
       run: |
-        # Skipping demo2 because it requires the octave-statistics package
-        # pushd demo2
-        # octave demo_YaleFace.m
-        # popd
+        pushd demo2
+        octave demo_YaleFace.m
+        popd
     - name: Run demo3
       run: |
         pushd demo3

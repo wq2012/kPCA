@@ -30,9 +30,29 @@ fprintf('PCA (10 runs avg):            %.4f seconds\n', t_pca);
 %% Benchmark kPCA (Gaussian)
 tic;
 for i=1:5
-    [Y, P, V] = kPCA(X, d, 'gaussian', 1);
+    [Y, P, V, E, stats] = kPCA(X, d, 'gaussian', 1);
 end
 t_kpca = toc / 5;
 fprintf('kPCA Gaussian (5 runs avg):   %.4f seconds\n', t_kpca);
+
+%% Benchmark kPCA_NewData
+X_new = rand(100, M);
+
+% Without stats
+tic;
+for i=1:5
+    Z1 = kPCA_NewData(X_new, X, P, 'gaussian', 1);
+end
+t_newdata_no_stats = toc / 5;
+fprintf('kPCA_NewData (no stats):      %.4f seconds\n', t_newdata_no_stats);
+
+% With stats
+tic;
+for i=1:5
+    Z2 = kPCA_NewData(X_new, X, P, 'gaussian', 1, stats);
+end
+t_newdata_stats = toc / 5;
+fprintf('kPCA_NewData (with stats):    %.4f seconds\n', t_newdata_stats);
+fprintf('  -> Speedup: %.1fx\n', t_newdata_no_stats / t_newdata_stats);
 
 fprintf('--- Benchmark Complete ---\n');

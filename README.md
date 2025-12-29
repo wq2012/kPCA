@@ -66,16 +66,18 @@ Performs standard Principal Component Analysis.
 ### [kPCA.m](code/kPCA.m)
 Performs Kernel Principal Component Analysis.
 ```matlab
-[Y, eigVector, eigValue, explained] = kPCA(X, d, type, para)
+[Y, eigVector, eigValue, explained, stats] = kPCA(X, d, type, para)
 ```
 - **type**: Kernel type: `'simple'`, `'poly'`, `'gaussian'`, `'laplacian'`, or `'sigmoid'`.
 - **para**: Kernel parameter.
+- **stats**: (Output) Struct containing centering statistics for efficient projection of new data.
 
 ### [kPCA_NewData.m](code/kPCA_NewData.m)
 Projects new data points into the kPCA space.
 ```matlab
-Z = kPCA_NewData(Y, X, eigVector, type, para)
+Z = kPCA_NewData(Y, X, eigVector, type, para, [stats])
 ```
+- **stats**: (Optional) For maximum efficiency, pass the `stats` struct returned by `kPCA`.
 
 ### [kPCA_PreImage.m](code/kPCA_PreImage.m)
 Reconstructs the pre-image of a point in the kPCA space (Gaussian kernel only).
@@ -119,7 +121,7 @@ octave test_distanceMatrix.m
 octave test_PCA.m
 octave test_kernel.m
 octave test_kPCA.m
-octave test_new_features.m
+octave test_extensions.m
 octave test_stability.m
 ```
 

@@ -33,4 +33,20 @@ X_rec = PCA_Inverse(Y, P, meanX);
 % (Here we just check if it's the correct dimension)
 assert(size(X_rec, 1) == 20 && size(X_rec, 2) == 10);
 
-fprintf('test_new_features passed\n');
+%% Test kPCA with stats and kPCA_NewData efficiency
+data = rand(20, 5);
+[Y, eigVector, eigValue, explained, stats] = kPCA(data, 2, 'gaussian', 1);
+assert(isstruct(stats), 'kPCA should return stats struct');
+assert(isfield(stats, 'colMeans'), 'stats should contain colMeans');
+
+newData = rand(5, 5);
+Z1 = kPCA_NewData(newData, data, eigVector, 'gaussian', 1);
+Z2 = kPCA_NewData(newData, data, eigVector, 'gaussian', 1, stats);
+assert(max(abs(Z1(:) - Z2(:))) < 1e-10, 'kPCA_NewData with stats should match baseline');
+
+%% Test kPCA_PreImage with initial guess
+z0 = mean(data)';
+z_rec = kPCA_PreImage(Y(1, :), eigVector, data, 1, z0);
+assert(length(z_rec) == 5, 'Pre-image should have correct dimension');
+
+fprintf('test_extensions passed\n');
