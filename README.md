@@ -4,6 +4,20 @@
 [![arxiv](https://img.shields.io/badge/PDF-arXiv-yellow.svg)](https://arxiv.org/pdf/1207.3538.pdf)
 [![Octave application](https://github.com/wq2012/kPCA/actions/workflows/octave.yml/badge.svg)](https://github.com/wq2012/kPCA/actions/workflows/octave.yml)
 
+## 📑 Table of Contents
+- [Overview](#📖-overview)
+- [Getting Started](#🚀-getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Mounting the library](#mounting-the-library)
+- [Core Functions](#🛠-core-functions)
+- [Demos](#📺-demos)
+    - [1. Synthetic Data Embedding](#1-synthetic-data-embedding-demo1)
+    - [2. Yale Face Database Classification](#2-yale-face-database-classification-demo2)
+    - [3. Face Active Shape Models](#3-face-active-shape-models-demo3)
+- [Testing & CI](#🧪-testing--ci)
+- [Project Structure](#📂-project-structure)
+- [Citations](#📜-citations)
+
 ## 📖 Overview
 
 This repository provides a comprehensive implementation of **Principal Component Analysis (PCA)**, **Kernel PCA (kPCA)**, and **pre-image reconstruction** of Gaussian kernel PCA. 
