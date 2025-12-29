@@ -15,12 +15,19 @@ function D = distanceMatrix(X)
 %   Applications in Face Recognition and Active Shape Models.
 %   arXiv:1207.3538 [cs.CV], 2012.
 
+%% Input validation
+narginchk(1, 1);
+if ~isnumeric(X) || isempty(X)
+    error('Input X must be a non-empty numeric matrix.');
+end
+
 N = size(X, 1);
 
+%% Optimized computation using expansion
 XX = sum(X.*X, 2);
-XX1 = repmat(XX, 1, N);
-XX2 = repmat(XX', N, 1);
+% D = sqrt(XX_i + XX_j - 2*X_i*X_j')
+D = bsxfun(@plus, XX, XX') - 2 * (X * X');
 
-D = XX1 + XX2 - 2 * (X * X');
+% Numerical stability: distance cannot be negative
 D(D < 0) = 0;
 D = sqrt(D);

@@ -8,7 +8,7 @@ function Z = kPCA_NewData(Y, X, eigVector, type, para)
 %   Y: New data matrix (K x M) - Each row is a new observation.
 %   X: Training data matrix (N x M) - Each row is a training observation.
 %   eigVector: Eigenvectors (N x d) obtained from the kPCA of training data.
-%   type: Type of kernel, can be 'simple', 'poly', or 'gaussian'.
+%   type: Type of kernel, can be 'simple', 'poly', 'gaussian', 'laplacian', or 'sigmoid'.
 %   para: Parameter for the kernel.
 %
 %   Output:
@@ -18,6 +18,9 @@ function Z = kPCA_NewData(Y, X, eigVector, type, para)
 %   Please cite: Quan Wang. Kernel Principal Component Analysis and its
 %   Applications in Face Recognition and Active Shape Models.
 %   arXiv:1207.3538 [cs.CV], 2012.
+
+%% Input validation
+narginchk(5, 5);
 
 K = kernel_NewData(Y, X, type, para);
 Z = K * eigVector;

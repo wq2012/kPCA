@@ -31,11 +31,8 @@ test_PCA = test_x * eigVector;
 disp('Performing Gaussian kernel PCA...');
 type = 'gaussian';
 
-% Automatic parameter selection
-DIST = distanceMatrix(train_x);
-DIST(DIST == 0) = inf;
-DIST = min(DIST);
-para = 5 * mean(DIST);
+% Automatic parameter selection using the median trick
+para = estimateSigma(train_x);
 
 [train_kPCA, eigVector] = kPCA(train_x, d, type, para);
 test_kPCA = kPCA_NewData(test_x, train_x, eigVector, type, para);

@@ -56,19 +56,20 @@ addpath('path/to/kPCA/code');
 ### [PCA.m](code/PCA.m)
 Performs standard Principal Component Analysis.
 ```matlab
-[Y, eigVector, eigValue] = PCA(X, d)
+[Y, eigVector, eigValue, explained] = PCA(X, d)
 ```
 - **X**: Data matrix (N x M), each row is an observation.
 - **d**: Target reduced dimension.
 - **Y**: Dimensionally-reduced data (N x d).
+- **explained**: Percentage of variance explained by each component.
 
 ### [kPCA.m](code/kPCA.m)
 Performs Kernel Principal Component Analysis.
 ```matlab
-[Y, eigVector, eigValue] = kPCA(X, d, type, para)
+[Y, eigVector, eigValue, explained] = kPCA(X, d, type, para)
 ```
-- **type**: Kernel type: `'simple'`, `'poly'`, or `'gaussian'`.
-- **para**: Kernel parameter (ignored for `'simple'`).
+- **type**: Kernel type: `'simple'`, `'poly'`, `'gaussian'`, `'laplacian'`, or `'sigmoid'`.
+- **para**: Kernel parameter.
 
 ### [kPCA_NewData.m](code/kPCA_NewData.m)
 Projects new data points into the kPCA space.
@@ -81,6 +82,10 @@ Reconstructs the pre-image of a point in the kPCA space (Gaussian kernel only).
 ```matlab
 z = kPCA_PreImage(y, eigVector, X, para)
 ```
+
+### Advanced Utilities
+- **[estimateSigma.m](code/estimateSigma.m)**: Automatically estimate the Gaussian kernel parameter using the "median trick".
+- **[PCA_Inverse.m](code/PCA_Inverse.m)**: Reconstruct original data from PCA components.
 
 ---
 
@@ -114,6 +119,14 @@ octave test_distanceMatrix.m
 octave test_PCA.m
 octave test_kernel.m
 octave test_kPCA.m
+octave test_new_features.m
+octave test_stability.m
+```
+
+### Benchmarking
+Compare performance between functions:
+```bash
+octave tests/benchmark_kPCA.m
 ```
 
 ### Continuous Integration (CI)

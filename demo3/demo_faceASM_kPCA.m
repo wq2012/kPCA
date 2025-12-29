@@ -17,11 +17,8 @@ d = 5; % Number of features used for reconstruction
 meanX = mean(X);
 k = 3; % Range of b (variation parameter)
 
-%% Automatic parameter selection
-DIST = distanceMatrix(X);
-DIST(DIST == 0) = inf;
-DIST = min(DIST);
-para = 5 * mean(DIST);
+%% Automatic parameter selection using the median trick
+para = estimateSigma(X);
 
 %% Kernel PCA
 [Y, eigVector, eigValue] = kPCA(X, d, type, para);

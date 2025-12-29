@@ -19,6 +19,9 @@ function z = kPCA_PreImage(y, eigVector, X, para)
 %   Applications in Face Recognition and Active Shape Models.
 %   arXiv:1207.3538 [cs.CV], 2012.
 
+%% Input validation
+narginchk(4, 4);
+
 max_iter = 1000;
 N = size(X, 1);
 d = max(size(y));

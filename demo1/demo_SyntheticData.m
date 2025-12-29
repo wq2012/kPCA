@@ -48,11 +48,8 @@ title(sprintf('Polynomial Kernel PCA (para=%d)', poly_para));
 drawnow;
 
 %% Gaussian Kernel PCA
-% Automatic parameter selection based on mean distance
-DIST = distanceMatrix(data);
-DIST(DIST == 0) = inf;
-DIST = min(DIST);
-gauss_para = 5 * mean(DIST);
+% Automatic parameter selection using the median trick
+gauss_para = estimateSigma(data);
 
 disp('Performing Gaussian kernel PCA...');
 [Y3, eigVector] = kPCA(data, d, 'gaussian', gauss_para);

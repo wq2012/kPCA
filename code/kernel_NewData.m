@@ -5,13 +5,14 @@ function K = kernel_NewData(Y, X, type, para)
 %   K = kernel_NewData(Y, X, type, para)
 %
 %   Input:
-%   Y: New data matrix - Each row is one observation, each column is one feature.
-%   X: Training data matrix - Each row is one observation, each column is one feature.
-%   type: Type of kernel, can be 'simple', 'poly', or 'gaussian'.
+%   Y: New data matrix (K x M) - Each row is one observation.
+%   X: Training data matrix (N x M) - Each row is one observation.
+%   type: Type of kernel, can be 'simple', 'poly', 'gaussian', 'laplacian', or 'sigmoid'.
 %   para: Parameter for the kernel.
 %       - For 'simple': Ignored.
 %       - For 'poly': The power parameter.
-%       - For 'gaussian': The sigma parameter.
+%       - For 'gaussian', 'laplacian': The sigma parameter.
+%       - For 'sigmoid': A two-element vector [alpha, beta] for alpha*X*Y' + beta.
 %
 %   Output:
 %   K: The computed kernel matrix (size of Y vs size of X).
@@ -20,6 +21,13 @@ function K = kernel_NewData(Y, X, type, para)
 %   Please cite: Quan Wang. Kernel Principal Component Analysis and its
 %   Applications in Face Recognition and Active Shape Models.
 %   arXiv:1207.3538 [cs.CV], 2012.
+
+%% Input validation
+narginchk(4, 4);
+validTypes = {'simple', 'poly', 'gaussian', 'laplacian', 'sigmoid'};
+if ~any(strcmp(type, validTypes))
+    error('Kernel type %s is not supported.', type);
+end
 
 N = size(X, 1);
 
@@ -40,4 +48,17 @@ if strcmp(type, 'gaussian')
     K = K(N+1:end, 1:N);
     K = K.^2;
     K = exp(-K ./ (2 * para^2));
+end
+
+if strcmp(type, 'laplacian')
+    % Laplacian kernel: K = exp(-||y-x|| / para)
+    K = distanceMatrix([X; Y]);
+    K = K(N+1:end, 1:N);
+    K = exp(-K ./ para);
+end
+
+if strcmp(type, 'sigmoid')
+    % Sigmoid kernel: K = tanh(alpha * Y * X' + beta)
+    % para = [alpha, beta]
+    K = tanh(para(1) * (Y * X') + para(2));
 end
