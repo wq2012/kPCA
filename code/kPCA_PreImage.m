@@ -29,7 +29,7 @@ d = length(y);
 
 gamma = zeros(1, N);
 for i = 1:N
-    gamma(i) = eigVector(i, 1:d) * y';
+    gamma(i) = eigVector(i, 1:d) * y(:);
 end
 
 %% Fixed-point iteration with multiple restarts
