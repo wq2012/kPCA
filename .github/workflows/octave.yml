@@ -28,6 +28,7 @@ jobs:
         octave test_kPCA.m
         octave test_extensions.m
         octave test_stability.m
+        octave test_reconstruction.m
         popd
     - name: Run demo1
       run: |
